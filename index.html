@@ -46,60 +46,87 @@
   </div>
 </footer>
 
-<div class="modal-overlay" id="modalOverlay">
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal">
     <button class="modal-close" id="modalClose" type="button" aria-label="Close">&times;</button>
-    <h3>Get Your Free CRM Money Machine Strategy Call</h3>
-    <p class="subhead" style="font-size:1rem; margin-bottom:20px;">Tell us where to send the details. We'll show you exactly what your CRM should be doing for you, and answer any questions on the call.</p>
-    <form id="optinForm">
+    <h3 id="modalTitle">Get Your Free Strategy Call</h3>
+    <p class="subhead">Where should we send the details?</p>
+    <form id="optinForm" novalidate>
       <div class="field">
-        <label for="fname">First name</label>
-        <input type="text" id="fname" name="first_name" required autocomplete="given-name">
+        <label for="fname">Name</label>
+        <input type="text" id="fname" name="first_name" required autocomplete="given-name" placeholder="Your name">
       </div>
       <div class="field">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" required autocomplete="email">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" required autocomplete="email" placeholder="you@yourbrokerage.com">
       </div>
-      <button class="btn btn-primary btn-block" type="submit">See The Full System</button>
-      <p class="form-note">We'll never spam you or share your info.</p>
+      <p class="form-note" id="formErr" role="alert" style="color:#fca5a5; display:none;"></p>
+      <button class="btn btn-primary btn-block" type="submit" id="submitBtn">See The Full System</button>
+      <p class="form-note">No obligation. We'll never spam you or share your info.</p>
     </form>
   </div>
 </div>
 
 <script>
-  // TODO(Leo): create a Kit form named "CRMMM Optin", tag "CRMMM Lead" (id 22428674 already
-  // exists in Kit), and drop its numeric form ID below. Until then this still captures the
-  // visitor forward to the details page; it just won't land in Kit yet.
-  var KIT_FORM_ID = null; // e.g. 9666940
+  // Kit account: leochenre (same account as tag "CRMMM Lead", id 22428674, created 2026-08-13).
+  // KIT_PUB is the v3 PUBLIC/publishable key (same class as a Stripe pk_, safe client-side —
+  // see SYS-connector-registry.md #4, KIT_V3_PUBLIC_API_KEY). Pattern matches
+  // deal-of-the-week-saas/landing/index.html's proven gate: fail-open on a timer so a Kit
+  // hiccup never blocks the visitor from continuing.
+  var KIT_TAG = '22428674';
+  var KIT_PUB = '1sNcVDssIRtQ-GnEJiUemg';
 
   var overlay = document.getElementById('modalOverlay');
   var openBtn = document.getElementById('ctaOpenModal');
   var closeBtn = document.getElementById('modalClose');
   var videoShell = document.getElementById('videoShell');
   var form = document.getElementById('optinForm');
+  var err = document.getElementById('formErr');
+  var submitBtn = document.getElementById('submitBtn');
+  var lastFocus = null;
 
-  function openModal() { overlay.classList.add('open'); }
-  function closeModal() { overlay.classList.remove('open'); }
+  function openModal() {
+    lastFocus = document.activeElement;
+    overlay.classList.add('open');
+    err.style.display = 'none';
+    setTimeout(function () { document.getElementById('fname').focus(); }, 30);
+  }
+  function closeModal() {
+    overlay.classList.remove('open');
+    if (lastFocus) lastFocus.focus();
+  }
 
   openBtn.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
   overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
   videoShell.addEventListener('click', openModal); // TODO(Leo): swap for real play-in-place once embed exists
 
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var email = document.getElementById('email').value;
-    var first = document.getElementById('fname').value;
+    var first = document.getElementById('fname').value.trim();
+    var email = document.getElementById('email').value.trim();
 
-    if (KIT_FORM_ID) {
-      fetch('https://api.kit.com/v3/forms/' + KIT_FORM_ID + '/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email, first_name: first })
-      }).catch(function () {});
+    if (!first) { err.textContent = 'Add your name.'; err.style.display = 'block'; return; }
+    if (!validEmail(email)) { err.textContent = "That email doesn't look right."; err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'One moment…';
+
+    var done = false;
+    function proceed() {
+      if (done) return;
+      done = true;
+      window.location.href = 'program.html?ref=optin';
     }
+    setTimeout(proceed, 2500); // hard ceiling, never let a Kit stall cost the visitor
 
-    window.location.href = 'program.html?ref=optin';
+    fetch('https://api.convertkit.com/v3/tags/' + KIT_TAG + '/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ api_key: KIT_PUB, email: email, first_name: first })
+    }).then(proceed).catch(proceed);
   });
 </script>
 
