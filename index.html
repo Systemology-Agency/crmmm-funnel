@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CRM Money Machine | Turn Your Lofty CRM Into An Automatic Follow-Up System</title>
+<meta name="description" content="A done-for-you system that turns your Lofty CRM into an automatic follow-up machine for every buyer and seller lead. Watch the 3-minute breakdown.">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#255c8e">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="logo"><img src="/assets/systemology-logo-main.svg" alt="Systemology Agency"></div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <span class="eyebrow">For Real Estate Agents &amp; Teams on Lofty</span>
+    <h1>Turn Your Lofty CRM Into An Automatic Money Machine</h1>
+    <p class="subhead">Most agents on Lofty are using about 20% of what it can actually do. The other 80% is the part that follows up with every lead automatically, for as long as it takes them to be ready to buy or sell. Watch the 3-minute breakdown below.</p>
+
+    <div class="video-shell" id="videoShell">
+      <!-- TODO(Leo): replace this placeholder with the real VSL embed (YouTube/Vimeo/Wistia iframe) once recorded -->
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='860' height='484'%3E%3Crect width='860' height='484' fill='%23255c8e'/%3E%3C/svg%3E" alt="CRM Money Machine video preview">
+      <div class="play-btn" aria-hidden="true"></div>
+      <div class="caption">Click to play &middot; 3 min</div>
+    </div>
+
+    <button class="btn btn-primary btn-lg" id="ctaOpenModal" type="button">Get My Free Strategy Call</button>
+    <p class="form-note">No obligation. We'll walk through your CRM and answer your questions, that's it.</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <img src="/assets/systemology-logo-main.svg" alt="Systemology Agency">
+    <p>&copy; 2026 Systemology Agency. All rights reserved.</p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" type="button" aria-label="Close">&times;</button>
+    <h3>Get Your Free CRM Money Machine Strategy Call</h3>
+    <p class="subhead" style="font-size:1rem; margin-bottom:20px;">Tell us where to send the details. We'll show you exactly what your CRM should be doing for you, and answer any questions on the call.</p>
+    <form id="optinForm">
+      <div class="field">
+        <label for="fname">First name</label>
+        <input type="text" id="fname" name="first_name" required autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">See The Full System</button>
+      <p class="form-note">We'll never spam you or share your info.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+  // TODO(Leo): create a Kit form named "CRMMM Optin", tag "CRMMM Lead" (id 22428674 already
+  // exists in Kit), and drop its numeric form ID below. Until then this still captures the
+  // visitor forward to the details page; it just won't land in Kit yet.
+  var KIT_FORM_ID = null; // e.g. 9666940
+
+  var overlay = document.getElementById('modalOverlay');
+  var openBtn = document.getElementById('ctaOpenModal');
+  var closeBtn = document.getElementById('modalClose');
+  var videoShell = document.getElementById('videoShell');
+  var form = document.getElementById('optinForm');
+
+  function openModal() { overlay.classList.add('open'); }
+  function closeModal() { overlay.classList.remove('open'); }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function (e) { if (e.target === overlay) closeModal(); });
+  videoShell.addEventListener('click', openModal); // TODO(Leo): swap for real play-in-place once embed exists
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('email').value;
+    var first = document.getElementById('fname').value;
+
+    if (KIT_FORM_ID) {
+      fetch('https://api.kit.com/v3/forms/' + KIT_FORM_ID + '/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, first_name: first })
+      }).catch(function () {});
+    }
+
+    window.location.href = 'program.html?ref=optin';
+  });
+</script>
+
+</body>
+</html>

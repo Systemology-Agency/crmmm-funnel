@@ -1,0 +1,375 @@
+/* CRMMM funnel — shared design system. Layout pattern inspired by lofty.com (1200px cap, soft shadows, rounded corners), Systemology brand colors. */
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --teal: #255c8e;
+  --muted-blue: #4d7491;
+  --crimson: #ad3457;
+  --dark-olive: #313624;
+  --gold: #cbbc79;
+
+  --bg: #ffffff;
+  --bg-soft: #f6f8fb;
+  --text: #313624;
+  --text-secondary: #515666;
+  --text-muted: #8b9099;
+  --border: #e5e8ee;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-soft: 0 2px 5px rgba(0,0,0,.08);
+  --shadow-card: 0 8px 24px rgba(49,54,36,.08);
+
+  --container: 1200px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  font-size: 18px; /* Rule 153/AG */
+}
+
+body {
+  margin: 0;
+  font-family: 'Manrope', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.7; /* Rule 153/AG */
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+.wrap {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+a { color: var(--teal); }
+
+/* Header */
+.site-header {
+  padding: 24px 0;
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.logo img { height: 34px; width: auto; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 32px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.btn-primary {
+  background: var(--crimson);
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+.btn-primary:hover { background: #942a49; transform: translateY(-1px); box-shadow: var(--shadow-card); }
+.btn-outline {
+  background: transparent;
+  color: var(--teal);
+  border: 2px solid var(--teal);
+}
+.btn-outline:hover { background: var(--teal); color: #fff; }
+.btn-lg { padding: 20px 40px; font-size: 1.15rem; }
+.btn-block { width: 100%; }
+
+/* Hero */
+.hero {
+  padding: 64px 0 48px;
+  background: linear-gradient(180deg, var(--bg-soft) 0%, #ffffff 100%);
+}
+.hero-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+}
+.eyebrow {
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--crimson);
+  background: #fbeaf0;
+  border-radius: 999px;
+  padding: 6px 16px;
+  margin-bottom: 20px;
+}
+h1 {
+  font-size: 2.6rem;
+  line-height: 1.2;
+  font-weight: 800;
+  margin: 0 0 20px;
+  color: var(--dark-olive);
+}
+h2 {
+  font-size: 1.9rem;
+  line-height: 1.25;
+  font-weight: 800;
+  color: var(--dark-olive);
+  margin: 0 0 16px;
+}
+h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--dark-olive);
+  margin: 0 0 10px;
+}
+.subhead {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin: 0 0 32px;
+}
+.section-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px;
+}
+
+/* Video block */
+.video-shell {
+  position: relative;
+  max-width: 860px;
+  margin: 0 auto 28px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  aspect-ratio: 16/9;
+  background: linear-gradient(135deg, var(--teal), var(--dark-olive));
+  cursor: pointer;
+}
+.video-shell img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.play-btn {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.95);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,.3);
+}
+.play-btn::after {
+  content: '';
+  border-style: solid;
+  border-width: 14px 0 14px 22px;
+  border-color: transparent transparent transparent var(--crimson);
+  margin-left: 6px;
+}
+.video-shell .caption {
+  position: absolute; bottom: 20px; left: 0; right: 0;
+  text-align: center; color: #fff; font-weight: 600;
+}
+
+/* Sections */
+.section { padding: 64px 0; }
+.section-alt { background: var(--bg-soft); }
+
+/* Cards / grid */
+.grid {
+  display: grid;
+  gap: 24px;
+}
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 860px) {
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-soft);
+}
+.card .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+/* Automation strip */
+.plan-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-soft);
+}
+.plan-card .plan-meta {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: .92rem;
+  color: var(--text-secondary);
+}
+.plan-card .plan-meta strong { color: var(--dark-olive); }
+
+/* Illustrative example callout */
+.callout {
+  background: #fff;
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  box-shadow: var(--shadow-soft);
+}
+.callout .tag {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--muted-blue);
+  margin-bottom: 10px;
+  display: block;
+}
+
+/* Pricing */
+.price-card {
+  background: #fff;
+  border: 2px solid var(--teal);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  max-width: 480px;
+  margin: 0 auto;
+}
+.price-card .price {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--dark-olive);
+  margin: 12px 0;
+}
+.price-card .price small {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.price-card ul {
+  text-align: left;
+  padding-left: 0;
+  list-style: none;
+  margin: 24px 0;
+}
+.price-card li {
+  padding: 8px 0 8px 30px;
+  position: relative;
+}
+.price-card li::before {
+  content: '✓';
+  position: absolute; left: 0;
+  color: var(--teal);
+  font-weight: 800;
+}
+
+/* FAQ */
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 22px 0;
+}
+.faq-item summary {
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1.05rem;
+  color: var(--dark-olive);
+}
+.faq-item p { color: var(--text-secondary); margin: 12px 0 0; }
+
+/* Final CTA */
+.cta-band {
+  background: var(--dark-olive);
+  color: #fff;
+  padding: 72px 0;
+  text-align: center;
+}
+.cta-band h2 { color: #fff; }
+.cta-band .subhead { color: #cfd2c8; }
+
+/* Footer */
+.site-footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .9rem;
+}
+.site-footer img { height: 24px; margin: 0 auto 12px; }
+
+/* Modal (optin popup) */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(49,54,36,.55);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  z-index: 100;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  max-width: 480px;
+  width: 100%;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.modal-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--bg-soft);
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+.field { margin-bottom: 16px; }
+.field label {
+  display: block;
+  font-weight: 600;
+  font-size: .9rem;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.field input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-family: inherit;
+}
+.field input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+.form-note { font-size: .82rem; color: var(--text-muted); margin-top: 14px; text-align: center; }
+
+@media (max-width: 640px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  .section { padding: 44px 0; }
+  .hero { padding: 44px 0 32px; }
+}
